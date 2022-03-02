@@ -6,7 +6,7 @@
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:54:13 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/02 13:31:56 by tfelwood         ###   ########.fr       */
+/*   Updated: 2022/03/02 14:05:45 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ static void	ft_write_message(t_message *message)
 	message->size = 0;
 }
 
-static void	ft_change_client(t_message *message)
+static void	ft_change_client(t_message *message, int pid)
 {
-	ft_write_message(message);
+	if (message->last_pid)
+		ft_write_message(message);
 	message->count = 0;
 	message->symb = 0;
+	message->last_pid = pid;
 }
 
 void ft_get_message(int signal, siginfo_t *info, void *data)
@@ -61,8 +63,8 @@ void ft_get_message(int signal, siginfo_t *info, void *data)
 	static t_message message;
 
 	(void) data;
-	if (message.last_pid && info->si_pid != message.last_pid)
-		ft_change_client(&message);
+	if (info->si_pid != message.last_pid)
+		ft_change_client(&message, info->si_pid);
 	if (signal == SIGUSR2)
 		message.symb |= 1 << (7 - message.count);
 	if (++message.count == 8)
@@ -79,11 +81,7 @@ void ft_get_message(int signal, siginfo_t *info, void *data)
 		message.symb = 0;
 	}
 	if (kill(info->si_pid, SIGUSR2) < 0)
-	{
-		ft_change_client(&message);
-		message.last_pid = 0;
-	}
-	message.last_pid = info->si_pid;
+		ft_change_client(&message, 0);
 }
 
 static int ft_signal_init(struct sigaction *signal)
