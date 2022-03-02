@@ -6,30 +6,13 @@
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:54:02 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/02 12:52:34 by tfelwood         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:15:49 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
 static volatile int g_signal;
-
-static int	ft_strtoi(const char *str)
-{
-	long long	num;
-
-	num = 0;
-	if (!str || !*str)
-		num = -1;
-	while (*str >= '0' && *str <= '9')
-	{
-		num = num * 10 + *str - '0';
-		++str;
-	}
-	if (*str)
-		num = -1;
-	return (num);
-}
 
 static void	ft_response(int sig)
 {
@@ -47,7 +30,7 @@ static void	ft_send_message(int pid, char *message)
 {
 	int	count;
 	int	size;
-	//int	wait;
+	int	wait;
 
 	size = (int)ft_strlen(message) + 1;
 	while (size--)
@@ -56,16 +39,16 @@ static void	ft_send_message(int pid, char *message)
 		while (count--)
 		{
 			g_signal = 1;
-		//	wait = 0;
+			wait = 0;
 			if (((*message & (1 << count)) && kill(pid, SIGUSR2) < 0)
 				|| (!(*message & (1 << count)) && kill(pid, SIGUSR1) < 0))
 				ft_error("Error: check PID of server\n");
 			while (g_signal)
 			{
-				/*if (wait >= MAX_WAIT)
-					ft_error("Error: waiting too long\n");*/
+				if (wait >= MAX_WAIT)
+					ft_error("Error: waiting too long\n");
 				usleep(SLEEP_TIME);
-				/*wait += SLEEP_TIME;*/
+				wait += SLEEP_TIME;
 			}
 		}
 		++message;

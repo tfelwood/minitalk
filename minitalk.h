@@ -6,7 +6,7 @@
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 19:04:44 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/02 11:28:55 by tfelwood         ###   ########.fr       */
+/*   Updated: 2022/03/02 16:25:10 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void	ft_putstr_fd(const char *s, int fd);
 void	ft_rec_putnbr(long long n, int fd);
 void	*ft_memset(void *b, int c, size_t len);
+int		ft_addchar(t_message *message);
+int		ft_strtoi(const char *str);
 #endif

@@ -6,43 +6,16 @@
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 20:54:13 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/02 14:05:45 by tfelwood         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:03:02 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "minitalk.h"
 
-static int	ft_addchar(t_message *message)
-{
-	char	*copy;
-	int		count;
-
-	count = 0;
-	if (!message->size)
-		count = 8;
-	else if ((int)ft_strlen(message->text) >= message->size - 1)
-		count = 2 * message->size;
-	if (count)
-	{
-		copy = (char *) malloc(count * sizeof(char));
-		if (!copy)
-			return (-1);
-		message->size = count;
-		ft_strlcpy(copy, message->text, message->size);
-		free(message->text);
-		message->text = copy;
-	}
-	count = ft_strlen(message->text);
-	message->text[count] = message->symb;
-	message->text[count + 1] = 0;
-	return (0);
-}
-
 static void	ft_write_message(t_message *message)
 {
-	if (message->text)
-		write(1, "\n", 1);
+	write(1, "\n", 1);
 	ft_putstr_fd(message->text, 1);
 	free(message->text);
 	message->text = NULL;
@@ -51,14 +24,17 @@ static void	ft_write_message(t_message *message)
 
 static void	ft_change_client(t_message *message, int pid)
 {
-	if (message->last_pid)
-		ft_write_message(message);
+	if (message->text)
+	{
+		free(message->text);
+		message->text = NULL;
+	}
 	message->count = 0;
 	message->symb = 0;
 	message->last_pid = pid;
 }
 
-void ft_get_message(int signal, siginfo_t *info, void *data)
+static void ft_get_message(int signal, siginfo_t *info, void *data)
 {
 	static t_message message;
 
@@ -109,7 +85,6 @@ int	main()
 	{
 		ft_putstr_fd("My PID is: ", 1);
 		ft_rec_putnbr(getpid(), 1);
-		//write(1, "\n", 1);
 		while (1)
 			pause();
 	}
