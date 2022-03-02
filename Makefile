@@ -2,49 +2,37 @@ SERVER_SRCS	= server.c server_utils.c utils.c
 CLIENT_SRCS = client.c utils.c
 SERVER_OBJS	= ${SERVER_SRCS:.c=.o}
 CLIENT_OBJS = ${CLIENT_SRCS:.c=.o}
+
 SERVER_SRCS_B =	server_bonus.c utils_bonus.c
 CLIENT_SRCS_B =	client_bonus.c utils_bonus.c
 SERVER_OBJS_B =	${SERVER_SRCS_B:.c=.o}
 CLIENT_OBJS_B =	${CLIENT_SRCS_B:.c=.o}
+
 SERVER	= server
 CLIENT = client
-HEADER	= minitalk.h
-HEADER_B = minitalk_bonus.h
-CHECK_FILE = check.tmp
-CHECK_FILE_B = check_b.tmp
+
 CC	= gcc
 RM	= rm -f
 FLAGS	= -Wall -Werror -Wextra
 D_FILES	= $(patsubst %.c,%.d,$(SERVER_SRCS) $(SERVER_SRCS_B) $(CLIENT_SRCS) $(CLIENT_SRCS_B))
+
 %.o:	%.c
 		${CC} ${FLAGS} -c $< -o ${<:.c=.o} -MMD
 
-all:	$(SERVER) $(CLIENT)
+all:	.mandatory
 
-
-$(SERVER):	$(SERVER_OBJS)
+$(SERVER): .check_bonus $(SERVER_OBJS)
 			CC $(FLAGS) $(SERVER_OBJS) -o $(SERVER)
 
-$(CLIENT):	$(CLIENT_OBJS)
+
+$(CLIENT):	.check_bonus $(CLIENT_OBJS)
 			CC $(FLAGS) $(CLIENT_OBJS) -o $(CLIENT)
 
-$(SERVER_B):	$(SERVER_OBJS_B)
-				CC $(FLAGS) $(SERVER_OBJS_B) -o $(SERVER)
-
-$(CLIENT_B):	$(CLIENT_OBJS_B)
-				CC $(FLAGS) $(CLIENT_OBJS_B) -o $(CLIENT)
-
-$(CHECK_FILE):	$(SERVER_B) $(CLIENT_B)
-
-#@touch CHECK_FILE
-
-$(CHANGE):	$(CHECK_FILE)
-
--include	$(D_FILES)
 clean:
 		${RM} ${SERVER_OBJS} ${CLIENT_OBJS}
 		$(RM) $(SERVER_OBJS_B) $(CLIENT_OBJS_B)
-		$(RM) $(CHECK_FILE)
+		$(RM) .check .check_bonus
+		$(RM) .bonus .mandatory
 		$(RM) $(D_FILES)
 
 fclean:	clean
@@ -52,8 +40,26 @@ fclean:	clean
 
 re:	fclean all
 
-bonus:	$(CHECK_FILE)
+.check:
+		touch .check
 
-#make SERVER_OBJS="$(SERVER_OBJS_B)" CLIENT_OBJS="$(CLIENT_OBJS_B)" HEADER="$(HEADER_B)" $(CHECK_FILE)
+.check_bonus:
+		touch .check_bonus
+
+.bonus: .check $(SERVER_OBJS_B) $(CLIENT_OBJS_B)
+		CC $(FLAGS) $(SERVER_OBJS_B) -o $(SERVER)
+		CC $(FLAGS) $(CLIENT_OBJS_B) -o $(CLIENT)
+		touch .check_bonus
+		touch .bonus
+
+.mandatory: .check_bonus $(SERVER_OBJS) $(CLIENT_OBJS)
+		CC $(FLAGS) $(SERVER_OBJS) -o $(SERVER)
+		CC $(FLAGS) $(CLIENT_OBJS) -o $(CLIENT)
+		touch .check
+		touch .mandatory
+
+bonus: .bonus
+
+-include	$(D_FILES)
 
 .PHONY:	all clean fclean re bonus
