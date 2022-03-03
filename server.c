@@ -29,6 +29,7 @@ static void	ft_change_client(t_message *message, int pid)
 		message->text = NULL;
 	}
 	message->count = 0;
+	message->size = 0;
 	message->symb = 0;
 	message->last_pid = pid;
 }
