@@ -54,6 +54,7 @@ int	ft_addchar(t_message *message)
 	message->text[count + 1] = 0;
 	return (0);
 }
+
 void	ft_rec_putnbr(long long n, int fd)
 {
 	char	s;

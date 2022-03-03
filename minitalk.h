@@ -10,23 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef MINITALK_H
-#define MINITALK_H
-#include <unistd.h>
-#include <stdlib.h>
-#include <signal.h>
-#define SLEEP_TIME 5
-#define MAX_WAIT   1000
+# define MINITALK_H
+# include <unistd.h>
+# include <stdlib.h>
+# include <signal.h>
+# define SLEEP_TIME 5
+# define MAX_WAIT   10000
 
 typedef struct s_message
 {
 	char	*text;
 	int		size;
-	char 	symb;
-	int 	count;
-	int 	last_pid;
-} t_message;
+	char	symb;
+	int		count;
+	int		last_pid;
+}	t_message;
 
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);

@@ -17,7 +17,7 @@ UTILS_OBJS_B = ${UTILS_SRCS_B:.c=.o}
 NAME1 = server
 NAME2 = client
 
-CC	= gcc
+CC	= clang
 RM	= rm -f
 FLAGS	= -Wall -Werror -Wextra
 D_FILES	= $(patsubst %.c,%.d,$(SERVER_SRCS) $(CLIENT_SRCS) $(UTILS_SRCS) $(SERVER_SRCS_B) $(CLIENT_SRCS_B) $(UTILS_SRCS_B))

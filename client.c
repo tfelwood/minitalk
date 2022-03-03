@@ -12,7 +12,7 @@
 
 #include "minitalk.h"
 
-static volatile int g_signal;
+static volatile sig_atomic_t	g_signal;
 
 static void	ft_response(int sig)
 {
@@ -20,7 +20,7 @@ static void	ft_response(int sig)
 	g_signal = 0;
 }
 
-static void ft_error(const char *er_mes)
+static void	ft_error(const char *er_mes)
 {
 	ft_putstr_fd(er_mes, 2);
 	exit(0);
@@ -30,7 +30,7 @@ static void	ft_send_message(int pid, char *message)
 {
 	int	count;
 	int	size;
-	int	wait;
+	//int	wait;
 
 	size = (int)ft_strlen(message) + 1;
 	while (size--)
@@ -39,25 +39,24 @@ static void	ft_send_message(int pid, char *message)
 		while (count--)
 		{
 			g_signal = 1;
-			wait = 0;
+			//wait = 0;
 			if (((*message & (1 << count)) && kill(pid, SIGUSR2) < 0)
 				|| (!(*message & (1 << count)) && kill(pid, SIGUSR1) < 0))
 				ft_error("Error: check PID of server\n");
 			while (g_signal)
 			{
-				if (wait >= MAX_WAIT)
-					ft_error("Error: waiting too long\n");
+				//if (wait >= MAX_WAIT)
+				//	ft_error("Error: waiting too long\n");
 				usleep(SLEEP_TIME);
-				wait += SLEEP_TIME;
+				//wait += SLEEP_TIME;
 			}
 		}
 		++message;
 	}
 }
 
-
-int main(int argc, char **argv) {
-
+int	main(int argc, char **argv)
+{
 	int		pid;
 
 	if (argc == 3)
@@ -73,5 +72,5 @@ int main(int argc, char **argv) {
 	}
 	else
 		ft_error("format: \n./client pid \"message\"\n");
-	return 0;
+	return (0);
 }

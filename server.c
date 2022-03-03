@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "minitalk.h"
 
 static void	ft_write_message(t_message *message)
@@ -34,11 +33,12 @@ static void	ft_change_client(t_message *message, int pid)
 	message->last_pid = pid;
 }
 
-static void ft_get_message(int signal, siginfo_t *info, void *data)
+static void	ft_get_message(int signal, siginfo_t *info, void *data)
 {
-	static t_message message;
+	static t_message	message;
 
 	(void) data;
+	ft_rec_putnbr(info->si_pid, 2);
 	if (info->si_pid != message.last_pid)
 		ft_change_client(&message, info->si_pid);
 	if (signal == SIGUSR2)
@@ -60,11 +60,11 @@ static void ft_get_message(int signal, siginfo_t *info, void *data)
 		ft_change_client(&message, 0);
 }
 
-static int ft_signal_init(struct sigaction *signal)
+static int	ft_signal_init(struct sigaction *signal)
 {
 	sigset_t			block;
 
-	if (sigemptyset(&block) < 0 || sigaddset(&block, SIGUSR1) < 0
+	if (sigemptyset(&block) < 0|| sigaddset(&block, SIGUSR1) < 0
 		|| sigaddset(&block, SIGUSR2) < 0)
 		return (-1);
 	ft_memset(signal, 0, sizeof(struct sigaction));
@@ -77,7 +77,7 @@ static int ft_signal_init(struct sigaction *signal)
 	return (0);
 }
 
-int	main()
+int	main(void)
 {
 	struct sigaction	signal;
 
@@ -89,5 +89,5 @@ int	main()
 			pause();
 	}
 	else
-		ft_putstr_fd("Error\n",2);
+		ft_putstr_fd("Error\n", 2);
 }
