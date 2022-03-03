@@ -1,65 +1,78 @@
-SERVER_SRCS	= server.c server_utils.c utils.c
-CLIENT_SRCS = client.c utils.c
+SERVER_SRCS	= server.c server_utils.c
+CLIENT_SRCS = client.c
+UTILS_SRCS = utils.c
+
 SERVER_OBJS	= ${SERVER_SRCS:.c=.o}
 CLIENT_OBJS = ${CLIENT_SRCS:.c=.o}
+UTILS_OBJS = ${UTILS_SRCS:.c=.o}
 
-SERVER_SRCS_B =	server_bonus.c utils_bonus.c
-CLIENT_SRCS_B =	client_bonus.c utils_bonus.c
+SERVER_SRCS_B =	server_bonus.c server_utils_bonus.c
+CLIENT_SRCS_B =	client_bonus.c
+UTILS_SRCS_B = utils_bonus.c
+
 SERVER_OBJS_B =	${SERVER_SRCS_B:.c=.o}
 CLIENT_OBJS_B =	${CLIENT_SRCS_B:.c=.o}
+UTILS_OBJS_B = ${UTILS_SRCS_B:.c=.o}
 
-SERVER	= server
-CLIENT = client
+NAME1 = server
+NAME2 = client
 
 CC	= gcc
 RM	= rm -f
 FLAGS	= -Wall -Werror -Wextra
-D_FILES	= $(patsubst %.c,%.d,$(SERVER_SRCS) $(SERVER_SRCS_B) $(CLIENT_SRCS) $(CLIENT_SRCS_B))
+D_FILES	= $(patsubst %.c,%.d,$(SERVER_SRCS) $(CLIENT_SRCS) $(UTILS_SRCS) $(SERVER_SRCS_B) $(CLIENT_SRCS_B) $(UTILS_SRCS_B))
 
 %.o:	%.c
 		${CC} ${FLAGS} -c $< -o ${<:.c=.o} -MMD
 
-all:	.mandatory
+all:	$(NAME1) $(NAME2)
 
-$(SERVER): .check_bonus $(SERVER_OBJS)
-			CC $(FLAGS) $(SERVER_OBJS) -o $(SERVER)
+$(NAME1):	.server_b $(SERVER_OBJS) $(UTILS_OBJS)
+			$(CC) $(FLAGS) $(SERVER_OBJS) $(UTILS_OBJS) -o $(NAME1)
+			@touch .server
 
+$(NAME2):	.client_b $(CLIENT_OBJS) $(UTILS_OBJS)
+			$(CC) $(FLAGS) $(CLIENT_OBJS) $(UTILS_OBJS) -o $(NAME2)
+			@touch .client
 
-$(CLIENT):	.check_bonus $(CLIENT_OBJS)
-			CC $(FLAGS) $(CLIENT_OBJS) -o $(CLIENT)
+server_b:	.server $(SERVER_OBJS_B) $(UTILS_OBJS_B)
+			$(CC) $(FLAGS) $(SERVER_OBJS_B) $(UTILS_OBJS_B) -o $(NAME1)
+			@touch server_b
+			@touch .server_b
+
+client_b:	.client $(CLIENT_OBJS_B) $(UTILS_OBJS_B)
+			$(CC) $(FLAGS) $(CLIENT_OBJS_B) $(UTILS_OBJS_B) -o $(NAME2)
+			@touch client_b
+			@touch .client_b
+
+-include	$(D_FILES)
 
 clean:
-		${RM} ${SERVER_OBJS} ${CLIENT_OBJS}
-		$(RM) $(SERVER_OBJS_B) $(CLIENT_OBJS_B)
-		$(RM) .check .check_bonus
-		$(RM) .bonus .mandatory
+		${RM} $(SERVER_OBJS) $(CLIENT_OBJS) $(UTILS_OBJS)
+		$(RM) $(SERVER_OBJS_B) $(CLIENT_OBJS_B) $(UTILS_OBJS_B)
+		$(RM) .server .server_b .client .client_b
+		$(RM) server_b client_b
 		$(RM) $(D_FILES)
 
 fclean:	clean
-		${RM} ${SERVER} ${CLIENT}
+		${RM} $(NAME1) $(NAME2)
 
 re:	fclean all
 
-.check:
-		touch .check
+bonus:	server_b client_b
 
-.check_bonus:
-		touch .check_bonus
+.server:
+		@touch .server
 
-.bonus: .check $(SERVER_OBJS_B) $(CLIENT_OBJS_B)
-		CC $(FLAGS) $(SERVER_OBJS_B) -o $(SERVER)
-		CC $(FLAGS) $(CLIENT_OBJS_B) -o $(CLIENT)
-		touch .check_bonus
-		touch .bonus
+.server_b:
+		@touch .server_b
 
-.mandatory: .check_bonus $(SERVER_OBJS) $(CLIENT_OBJS)
-		CC $(FLAGS) $(SERVER_OBJS) -o $(SERVER)
-		CC $(FLAGS) $(CLIENT_OBJS) -o $(CLIENT)
-		touch .check
-		touch .mandatory
+.client:
+		@touch .client
 
-bonus: .bonus
+.client_b:
+		@touch .client_b
 
--include	$(D_FILES)
+
 
 .PHONY:	all clean fclean re bonus
