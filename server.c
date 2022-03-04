@@ -23,15 +23,26 @@ static void	ft_write_message(t_message *message)
 
 static void	ft_change_client(t_message *message, int pid)
 {
-	if (message->text)
+	if (pid != 0)
+	{
+		if (pid != -1)
+			message->last_pid = pid;
+		if (message->text)
+		{
+			free(message->text);
+			message->text = NULL;
+		}
+		message->count = 0;
+		message->size = 0;
+		message->symb = 0;
+	}
+	else if (message->last_pid == 0)
 	{
 		free(message->text);
-		message->text = NULL;
+		ft_putstr_fd("Error: incorrect PID\n");
+		exit(0);
 	}
-	message->count = 0;
-	message->size = 0;
-	message->symb = 0;
-	message->last_pid = pid;
+	
 }
 
 static void	ft_get_message(int signal, siginfo_t *info, void *data)
@@ -39,8 +50,7 @@ static void	ft_get_message(int signal, siginfo_t *info, void *data)
 	static t_message	message;
 
 	(void) data;
-	ft_rec_putnbr(info->si_pid, 2);
-	if (info->si_pid != message.last_pid)
+	if (!info->si_pid || info->si_pid != message.last_pid)
 		ft_change_client(&message, info->si_pid);
 	if (signal == SIGUSR2)
 		message.symb |= 1 << (7 - message.count);
@@ -57,8 +67,8 @@ static void	ft_get_message(int signal, siginfo_t *info, void *data)
 		message.count = 0;
 		message.symb = 0;
 	}
-	if (kill(info->si_pid, SIGUSR2) < 0)
-		ft_change_client(&message, 0);
+	if (kill(message.last_pid, SIGUSR2) < 0)
+		ft_change_client(&message, -1);
 }
 
 static int	ft_signal_init(struct sigaction *signal)
