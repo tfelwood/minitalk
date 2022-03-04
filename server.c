@@ -39,10 +39,9 @@ static void	ft_change_client(t_message *message, int pid)
 	else if (message->last_pid == 0)
 	{
 		free(message->text);
-		ft_putstr_fd("Error: incorrect PID\n", 2);
+		ft_putstr_fd("Error: incorrect PID\n", 1);
 		exit(0);
 	}
-	
 }
 
 static void	ft_get_message(int signal, siginfo_t *info, void *data)
@@ -75,7 +74,7 @@ static int	ft_signal_init(struct sigaction *signal)
 {
 	sigset_t			block;
 
-	if (sigemptyset(&block) < 0|| sigaddset(&block, SIGUSR1) < 0
+	if (sigemptyset(&block) < 0 || sigaddset(&block, SIGUSR1) < 0
 		|| sigaddset(&block, SIGUSR2) < 0)
 		return (-1);
 	ft_memset(signal, 0, sizeof(struct sigaction));
