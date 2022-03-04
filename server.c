@@ -39,7 +39,7 @@ static void	ft_change_client(t_message *message, int pid)
 	else if (message->last_pid == 0)
 	{
 		free(message->text);
-		ft_putstr_fd("Error: incorrect PID\n");
+		ft_putstr_fd("Error: incorrect PID\n", 2);
 		exit(0);
 	}
 	
