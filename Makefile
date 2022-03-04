@@ -29,21 +29,21 @@ all:	$(NAME1) $(NAME2)
 
 $(NAME1):	.server_b $(SERVER_OBJS) $(UTILS_OBJS)
 			$(CC) $(FLAGS) $(SERVER_OBJS) $(UTILS_OBJS) -o $(NAME1)
-			touch .server
+			@touch .server
 
 $(NAME2):	.client_b $(CLIENT_OBJS) $(UTILS_OBJS)
 			$(CC) $(FLAGS) $(CLIENT_OBJS) $(UTILS_OBJS) -o $(NAME2)
-			touch .client
+			@touch .client
 
 server_b:	.server $(SERVER_OBJS_B) $(UTILS_OBJS_B)
 			$(CC) $(FLAGS) $(SERVER_OBJS_B) $(UTILS_OBJS_B) -o $(NAME1)
-			touch server_b
-			touch .server_b
+			@touch server_b
+			@touch .server_b
 
 client_b:	.client $(CLIENT_OBJS_B) $(UTILS_OBJS_B)
 			$(CC) $(FLAGS) $(CLIENT_OBJS_B) $(UTILS_OBJS_B) -o $(NAME2)
-		touch client_b
-		touch .client_b
+		@touch client_b
+		@touch .client_b
 
 -include	$(D_FILES)
 
@@ -62,16 +62,16 @@ re:	fclean all
 bonus:	server_b client_b
 
 .server:
-		touch .server
+		@touch .server
 
 .server_b:
-		touch .server_b
+		@touch .server_b
 
 .client:
-		touch .client
+		@touch .client
 
 .client_b:
-		touch .client_b
+		@touch .client_b
 
 
 
