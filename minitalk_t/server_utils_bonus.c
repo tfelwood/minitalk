@@ -1,23 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server_utils.c                                     :+:      :+:    :+:   */
+/*   server_utils_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/02 15:03:34 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/02 15:03:34 by tfelwood         ###   ########.fr       */
+/*   Created: 2022/03/04 05:23:45 by tfelwood          #+#    #+#             */
+/*   Updated: 2022/03/05 11:11:46 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+static size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	src_size;
 
 	src_size = ft_strlen(src);
-	if (dstsize)
+	if (dstsize && dst)
 	{
 		while (src && *src && dstsize - 1)
 		{

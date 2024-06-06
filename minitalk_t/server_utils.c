@@ -6,18 +6,18 @@
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 15:03:34 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/02 15:03:34 by tfelwood         ###   ########.fr       */
+/*   Updated: 2022/03/05 11:11:46 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
+static size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	src_size;
 
 	src_size = ft_strlen(src);
-	if (dstsize)
+	if (dstsize && dst)
 	{
 		while (src && *src && dstsize - 1)
 		{

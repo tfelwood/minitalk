@@ -1,0 +1,1 @@
+/usr/bin/cc -g -Wl,--enable-auto-import CMakeFiles/minitalk.dir/server.c.o CMakeFiles/minitalk.dir/utils.c.o CMakeFiles/minitalk.dir/server_bonus.c.o CMakeFiles/minitalk.dir/client_bonus.c.o CMakeFiles/minitalk.dir/server_utils_bonus.c.o CMakeFiles/minitalk.dir/utils_bonus.c.o -o minitalk.exe -Wl,--out-implib,libminitalk.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

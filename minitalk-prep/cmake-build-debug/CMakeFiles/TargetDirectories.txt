@@ -1,0 +1,3 @@
+/cygdrive/c/Users/Adelina/Downloads/minitalk-prep/minitalk-prep/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cygdrive/c/Users/Adelina/Downloads/minitalk-prep/minitalk-prep/cmake-build-debug/CMakeFiles/edit_cache.dir
+/cygdrive/c/Users/Adelina/Downloads/minitalk-prep/minitalk-prep/cmake-build-debug/CMakeFiles/minitalk.dir

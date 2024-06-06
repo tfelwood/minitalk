@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/28 19:04:44 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/03 13:11:52 by tfelwood         ###   ########.fr       */
+/*   Created: 2022/03/04 05:17:48 by tfelwood          #+#    #+#             */
+/*   Updated: 2022/03/04 05:29:52 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef MINITALK_BONUS_H
+# define MINITALK_BONUS_H
+
 # include <unistd.h>
 # include <stdlib.h>
 # include <signal.h>
@@ -28,7 +29,6 @@ typedef struct s_message
 }	t_message;
 
 size_t	ft_strlen(const char *s);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void	ft_putstr_fd(const char *s, int fd);
 void	ft_rec_putnbr(long long n, int fd);
 void	*ft_memset(void *b, int c, size_t len);

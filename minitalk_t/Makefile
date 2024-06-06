@@ -22,7 +22,7 @@ RM	= rm -f
 FLAGS	= -Wall -Werror -Wextra
 D_FILES	= $(patsubst %.c,%.d,$(SERVER_SRCS) $(CLIENT_SRCS) $(UTILS_SRCS) $(SERVER_SRCS_B) $(CLIENT_SRCS_B) $(UTILS_SRCS_B))
 
-%.o:	%.c
+%.o:	%.c Makefile
 		${CC} ${FLAGS} -c $< -o ${<:.c=.o} -MMD
 
 all:	$(NAME1) $(NAME2)
@@ -42,8 +42,8 @@ server_b:	.server $(SERVER_OBJS_B) $(UTILS_OBJS_B)
 
 client_b:	.client $(CLIENT_OBJS_B) $(UTILS_OBJS_B)
 			$(CC) $(FLAGS) $(CLIENT_OBJS_B) $(UTILS_OBJS_B) -o $(NAME2)
-		@touch client_b
-		@touch .client_b
+			@touch client_b
+			@touch .client_b
 
 -include	$(D_FILES)
 
@@ -72,7 +72,5 @@ bonus:	server_b client_b
 
 .client_b:
 		@touch .client_b
-
-
 
 .PHONY:	all clean fclean re bonus

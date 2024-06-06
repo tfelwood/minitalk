@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tfelwood <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/01 20:54:13 by tfelwood          #+#    #+#             */
-/*   Updated: 2022/03/02 15:03:02 by tfelwood         ###   ########.fr       */
+/*   Created: 2022/03/04 05:19:40 by tfelwood          #+#    #+#             */
+/*   Updated: 2022/03/04 05:19:40 by tfelwood         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 static void	ft_write_message(t_message *message)
 {
@@ -39,7 +39,7 @@ static void	ft_change_client(t_message *message, int pid)
 	else if (message->last_pid == 0)
 	{
 		free(message->text);
-		ft_putstr_fd("Error: incorrect PID\n", 1);
+		ft_putstr_fd("Error: incorrect PID\n", 2);
 		exit(0);
 	}
 }

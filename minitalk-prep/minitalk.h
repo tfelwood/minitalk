@@ -28,7 +28,6 @@ typedef struct s_message
 }	t_message;
 
 size_t	ft_strlen(const char *s);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void	ft_putstr_fd(const char *s, int fd);
 void	ft_rec_putnbr(long long n, int fd);
 void	*ft_memset(void *b, int c, size_t len);
